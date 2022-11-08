@@ -11,7 +11,7 @@ class ModelVanet(Model):
         self.schedule = RandomActivation(self)
         a = AgentVanet(0, self)
         self.schedule.add(a)
-        self.grid.place_agent(a, (0, 0))
+        self.grid.move_to_empty(a)
 
     def step(self):
         self.schedule.step()
