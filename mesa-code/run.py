@@ -1,5 +1,6 @@
 import yaml
 from pathlib import Path
+import server
 
 from model import ModelVanet
 
@@ -32,7 +33,6 @@ def load_parameters(profile_file):
                 "x": agent["x"],
                 "y": agent["y"],
                 "color": get2(agent, "color", AGENT_DEFAULTS["color"]),
-                "features": agent.get("features")
             })
     return profile
 
@@ -104,7 +104,7 @@ if __name__ == "__main__":
         # Initialization
         model = ModelVanet(profile["model"], profile["agents"])
         # Beginning of the simulation
-        logger.info(f"seed: {model.seed}")
+        print(f"seed: {model.seed}")
         for i in range(steps_count):
-            logger.info(f"step:{i}")
+            print(f"step:{i}")
             model.step()

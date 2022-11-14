@@ -1,0 +1,13 @@
+model:
+    name: "Default Profile"
+    width: 800
+    height: 600
+    seed: null
+
+agents:
+  agent.AgentVanet:
+    - id: 0
+      x: 0
+      y: 0
+      color: "black"
+      seed: null
