@@ -1,5 +1,8 @@
+import time
+import importlib
 from mesa import Model
 from mesa.space import SingleGrid
+#from mesa.space import place_agent
 from mesa.time import RandomActivation
 from agent import AgentVanet
 
@@ -19,7 +22,7 @@ class ModelVanet(Model):
         self.reset_randomizer(self.seed)
         # Initialize the model
         self.running = True
-        self.grid = SingleGrid(800, 600, False) # TODO: here
+        self.grid = SingleGrid(model.get("width"), model.get("height"), False) # TODO: here
         self.schedule = RandomActivation(self)
         # Add agents
         for agent_class, agents in agents.items():
@@ -27,9 +30,13 @@ class ModelVanet(Model):
             module = importlib.import_module(module_name)
             cls = getattr(module, class_name)
             for agent in agents:
-                a = cls(agent["id"], self, agent["color"])
+                a = cls(agent["id"], self)#, agent["color"])
                 self.schedule.add(a)
-                self.space.place_agent(a, (agent["x"], agent["y"]))
+                self.grid.place_agent(a, (agent["x"], agent["y"]))
 
     def step(self):
         self.schedule.step()
+    
+    def run_model(self, n):
+        for i in range(n):
+            self.step()
