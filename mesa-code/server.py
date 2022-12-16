@@ -1,22 +1,23 @@
 import mesa
 #from mesa.visualization.modules import CanvasGrid
 #from mesa.visualization.ModularVisualization import ModularServer
+from visualization.visualization import ContinuousCanvas
 
 from model import ModelVanet
 
 
 def agent_portrayal(agent):
     portrayal = {
-        "Shape": "circle",
-        "color": "red",
+        "Id": agent.unique_id,
+        "Color": agent.color,
         "Filled": "true",
-        "r": 0.5,
+        "Radius": 0.5,
         "Layer": 0,
     }
     return portrayal
 
 def start(scenario, port, open_browser):
-    grid = mesa.visualization.CanvasGrid(agent_portrayal, scenario["model"]["width"], scenario["model"]["height"], 500, 500)
+    grid = ContinuousCanvas(agent_portrayal, scenario["model"]["width"], scenario["model"]["height"])
     server = mesa.visualization.ModularServer(
         ModelVanet, [grid], "VANET Model", scenario, port
     )
