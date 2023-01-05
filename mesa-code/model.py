@@ -31,6 +31,7 @@ class ModelVanet(Model):
             cls = getattr(module, class_name)
             for agent in agents:
                 a = cls(agent["id"], self, agent["color"])
+                a.update_messages(agent["messages"])
                 self.schedule.add(a)
                 self.grid.place_agent(a, (agent["x"], agent["y"]))
 

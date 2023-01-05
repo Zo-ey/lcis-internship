@@ -1,8 +1,9 @@
 import yaml
 from pathlib import Path
-import server
 
+import server
 from model import ModelVanet
+from wsn_message import WSNMessage
 
 
 DEFAULT_NB_STEPS = 20
@@ -33,6 +34,7 @@ def load_parameters(profile_file):
                 "x": agent["x"],
                 "y": agent["y"],
                 "color": get2(agent, "color", AGENT_DEFAULTS["color"]),
+                "messages": [WSNMessage(**message) for message in agent["messages"]],
             })
     return profile
 

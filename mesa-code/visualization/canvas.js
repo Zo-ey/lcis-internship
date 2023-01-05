@@ -62,10 +62,10 @@ var continuousSpace = function(canvas_width, canvas_height) {
 	// Create the canvas and add it to the body
 	var canvas_tag = "<canvas width='" + canvas_width + "' height='" + canvas_height + "' ";
 	canvas_tag += "style='border:1px solid'></canvas>";
-	var canvas = $(canvas_tag)[0];
-	//var canvas = canvas_tag[0];
+    //var canvas = document.getElementById(canvas_tag)[0];
+    var canvas = $(canvas_tag)[0];
+    //document.getElementById("#elements").appendChild(canvas);
 	$("#elements").append(canvas);
-	//("#elements").append(canvas);
 
 	// Create the context and the drawing controller:
 	var context = canvas.getContext("2d");
