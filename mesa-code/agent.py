@@ -24,7 +24,7 @@ def is_sending_msg(messages):
     return len(messages) != 0
 # if the node doesn't forward a msg as expected, it's suspicious (maybe it didn't had the time to
 # send it yet)
-def is_forwarding_msg(messages):
+#def is_forwarding_msg(messages):
 
 # Blackhole if:
 # * advert with 0 hops / zero-distance
