@@ -4,7 +4,7 @@ from mesa import Model
 from mesa.space import SingleGrid
 #from mesa.space import place_agent
 from mesa.time import RandomActivation
-from agent import AgentVanet
+from agent import WSNAgent
 
 
 def split_on_last(string, char):
@@ -13,7 +13,7 @@ def split_on_last(string, char):
     return start[::-1], end[::-1]
 
 
-class ModelVanet(Model):
+class WSNModel(Model):
     def __init__(self, model, agents):
         # Initialize the RNG
         self.seed = model.get("seed")
@@ -35,7 +35,9 @@ class ModelVanet(Model):
                 self.schedule.add(a)
                 self.grid.place_agent(a, (agent["x"], agent["y"]))
 
-    def step(self):
+    def step(self): 
+        #for agent in self.schedule.agents:
+        #    agent.update_messages(messages)
         self.schedule.step()
     
     def run_model(self, n):

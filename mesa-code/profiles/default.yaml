@@ -5,9 +5,14 @@ model:
     seed: null
 
 agents:
-  agent.AgentVanet:
+  agent.WSNAgent:
     - id: 0
       x: 0
       y: 0
       color: "black"
       seed: null
+      messages:
+        - src: 0
+          dest: -1
+          message_type: "Advertisement"
+          data: 0x08

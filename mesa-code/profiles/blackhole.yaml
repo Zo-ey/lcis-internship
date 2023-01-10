@@ -6,7 +6,7 @@ model:
     seed: null
 
 agents:
-  agent.AgentVanet:
+  agent.WSNAgent:
     - id: 0
       x: 0
       y: 0

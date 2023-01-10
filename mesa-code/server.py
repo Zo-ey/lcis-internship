@@ -3,7 +3,7 @@ import mesa
 #from mesa.visualization.ModularVisualization import ModularServer
 from visualization.visualization import ContinuousCanvas
 
-from model import ModelVanet
+from model import WSNModel
 
 
 def agent_portrayal(agent):

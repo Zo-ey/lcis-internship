@@ -11,6 +11,9 @@ State = Enum("State", ("Safe", "Suspicious", "Blackhole"))
 #   running or sub between 1st and last timestamp
 # * Lying advert: advert with wrong data which is shorter than in reality
 # * Not forwarding
+# * Pb: How to update messages? -> yaml file is write locked when MAS is reading it. By the
+# meanwile, DT keeps its information in an internal buffer. When MAS is done, MAS deletes the yaml
+# file. If there is no yaml file already created, DT creates it.
 
 # if the node sent an advertisement of value 0, it's malicious
 def has_malicious_ad(messages):
@@ -36,7 +39,7 @@ def check_self(fromMe, toMe, throughMe):
         state = State.Suspicious
     return state
 
-class AgentVanet(Agent):
+class WSNAgent(Agent):
     def __init__(self, unique_id, model, color):
         super().__init__(unique_id, model)
         self.color = color
@@ -44,7 +47,7 @@ class AgentVanet(Agent):
         self.toMe = [] # Messages sent to me
         self.throughMe = [] # Messages sent through me
         self.tag = State.Safe
-    
+   # Update (and sort) messages lists
     def update_messages(self, messages):
         for m in messages:
             if m.src == self.unique_id:

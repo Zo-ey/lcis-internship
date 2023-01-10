@@ -2,7 +2,7 @@ import yaml
 from pathlib import Path
 
 import server
-from model import ModelVanet
+from model import WSNModel
 from wsn_message import WSNMessage
 
 
@@ -104,7 +104,7 @@ if __name__ == "__main__":
         except AttributeError:
             steps_count = DEFAULT_NB_STEPS
         # Initialization
-        model = ModelVanet(profile["model"], profile["agents"])
+        model = WSNModel(profile["model"], profile["agents"])
         # Beginning of the simulation
         print(f"seed: {model.seed}")
         for i in range(steps_count):
