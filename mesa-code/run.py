@@ -1,8 +1,9 @@
 import yaml
 from pathlib import Path
-import server
 
-from model import ModelVanet
+import server
+from model import WSNModel
+from wsn_message import WSNMessage
 
 
 DEFAULT_NB_STEPS = 20
@@ -33,6 +34,7 @@ def load_parameters(profile_file):
                 "x": agent["x"],
                 "y": agent["y"],
                 "color": get2(agent, "color", AGENT_DEFAULTS["color"]),
+                "messages": [WSNMessage(**message) for message in agent["messages"]],
             })
     return profile
 
@@ -102,7 +104,7 @@ if __name__ == "__main__":
         except AttributeError:
             steps_count = DEFAULT_NB_STEPS
         # Initialization
-        model = ModelVanet(profile["model"], profile["agents"])
+        model = WSNModel(profile["model"], profile["agents"])
         # Beginning of the simulation
         print(f"seed: {model.seed}")
         for i in range(steps_count):
