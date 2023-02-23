@@ -4,6 +4,7 @@ model:
     width: 10
     height: 10
     seed: null
+    messages_path: messages.yaml
 
 agents:
   agent.WSNAgent:
@@ -12,72 +13,23 @@ agents:
       y: 0
       color: "black"
       seed: null
-      messages:
-        - src: 0
-          dest: -1
-          message_type: "Advertisement"
-          data: 0x00
     - id: 1
       x: 5
       y: 5
       color: "black"
       seed: null
-      messages:
-        - src: 0
-          dest: -1
-          message_type: "Advertisement"
-          data: 0x00
-        - src: 3
-          dest: 1
-          message_type: "Data"
-          data: 0x00
     - id: 2
       x: 1
       y: 5
       color: "black"
       seed: null
-      messages:
-        - src: 0
-          dest: -1
-          message_type: "Advertisement"
-          data: 0x00
-        - src: 2
-          dest: 4
-          message_type: "Data"
-          data: 0x00
-        - src: 4
-          dest: 2
-          message_type: "Data"
-          data: 0x01
     - id: 3
       x: 0
       y: 8
       color: "black"
       seed: null
-      messages:
-        - src: 0
-          dest: -1
-          message_type: "Advertisement"
-          data: 0x00
-        - src: 3
-          dest: 1
-          message_type: "Data"
-          data: 0x00
     - id: 4
       x: 8
       y: 0
       color: "black"
       seed: null
-      messages:
-        - src: 0
-          dest: -1
-          message_type: "Advertisement"
-          data: 0x00
-        - src: 2
-          dest: 4
-          message_type: "Data"
-          data: 0x00
-        - src: 4
-          dest: 2
-          message_type: "Data"
-          data: 0x01

@@ -1,3 +1,4 @@
+import yaml
 import time
 import importlib
 from mesa import Model
@@ -14,16 +15,21 @@ def split_on_last(string, char):
 
 
 class WSNModel(Model):
-    def __init__(self, model, agents):
+    def __init__(self, agents, width, height, messages_path, seed=None):
         # Initialize the RNG
-        self.seed = model.get("seed")
+        self.seed = seed
         if self.seed is None:
             self.seed = time.time()
         self.reset_randomizer(self.seed)
         # Initialize the model
         self.running = True
-        self.grid = SingleGrid(model.get("width"), model.get("height"), False) # TODO: here
+        self.grid = SingleGrid(width, height, False)
         self.schedule = RandomActivation(self)
+        # Load messages
+        with open(messages_path, 'r') as f:
+            messages = yaml.safe_load(f)
+            print(messages)
+            exit()
         # Add agents
         for agent_class, agents in agents.items():
             module_name, class_name = split_on_last(agent_class, '.')
@@ -31,7 +37,7 @@ class WSNModel(Model):
             cls = getattr(module, class_name)
             for agent in agents:
                 a = cls(agent["id"], self, agent["color"])
-                a.update_messages(agent["messages"])
+                a.update_messages()
                 self.schedule.add(a)
                 self.grid.place_agent(a, (agent["x"], agent["y"]))
 

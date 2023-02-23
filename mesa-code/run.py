@@ -1,3 +1,4 @@
+import redis
 import yaml
 from pathlib import Path
 
@@ -34,7 +35,6 @@ def load_parameters(profile_file):
                 "x": agent["x"],
                 "y": agent["y"],
                 "color": get2(agent, "color", AGENT_DEFAULTS["color"]),
-                "messages": [WSNMessage(**message) for message in agent["messages"]],
             })
     return profile
 
@@ -104,7 +104,8 @@ if __name__ == "__main__":
         except AttributeError:
             steps_count = DEFAULT_NB_STEPS
         # Initialization
-        model = WSNModel(profile["model"], profile["agents"])
+        profile["model"].pop("name")
+        model = WSNModel(profile["agents"], **profile["model"])
         # Beginning of the simulation
         print(f"seed: {model.seed}")
         for i in range(steps_count):
