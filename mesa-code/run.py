@@ -1,4 +1,3 @@
-import redis
 import yaml
 from pathlib import Path
 

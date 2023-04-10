@@ -1,0 +1,49 @@
+0: # blackhole
+  - src: 0
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+1: # suspicious
+  - src: 0
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 3
+    dest: 1
+    message_type: Data
+    data: 0x00
+2:
+  - src: 0
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 2
+    dest: 4
+    message_type: Data
+    data: 0x00
+  - src: 4
+    dest: 2
+    message_type: Data
+    data: 0x01
+3:
+  - src: 0
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 3
+    dest: 1
+    message_type: Data
+    data: 0x00
+4:
+  - src: 0
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 2
+    dest: 4
+    message_type: Data
+    data: 0x00
+  - src: 4
+    dest: 2
+    message_type: Data
+    data: 0x01
