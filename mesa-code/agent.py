@@ -20,7 +20,7 @@ State = Enum("State", ("Safe", "Suspicious", "Blackhole"))
 # if the node sent an advertisement of value 0, it's malicious
 def has_malicious_ad(messages):
     for m in messages:
-        if m["message_type"] == "Advertisement" and m['data'] == 0:
+        if m.type == "Advertisement" and m.data == 0:
             return True
     return False
 
@@ -52,11 +52,14 @@ class WSNAgent(Agent):
    # Update (and sort) messages lists
     def update_messages(self, messages):
         #print(messages)
-        print(messages[0])
+        #print(messages)
+        print("agent "+str(self.unique_id))
         for m in messages:
-            if m["src"] == self.unique_id:
+            print("    ",end="")
+            print(m)
+            if m.src == self.unique_id:
                 self.fromMe.append(m)
-            elif m["dest"] == self.unique_id:
+            elif m.dest == self.unique_id:
                 self.toMe.append(m)
             else:
                 self.throughMe.append(m)

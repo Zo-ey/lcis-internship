@@ -44,11 +44,12 @@ class WSNModel(Model):
         # Load and add messages
         with open(messages_path, 'r') as f:
             messages = yaml.safe_load(f)
-        for i in range(0, len(messages) -1):
-            WSNMessage(messages[i])
-            self.schedule.agents
-        for agent in self.schedule.agents:
-            agent.update_messages(messages)
+        for i in range(0, len(messages)):
+            wsnmessages = []
+            for j in range(0, len(messages[i])):
+                tempMess = messages[i][j]
+                wsnmessages.append(WSNMessage(**tempMess))
+            self.schedule.agents[i].update_messages(wsnmessages)
         self.schedule.step()
     
     def run_model(self, n):

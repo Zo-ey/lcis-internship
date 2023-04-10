@@ -10,6 +10,13 @@ class WSNMessage:
         self.dest = dest
         self.type = WSNMessageType[message_type]
         self.data = data
+    
+    def __str__(self):
+        ret = 'src : '+str(self.src) + ", "
+        ret += 'dest : '+str(self.dest) + ", "
+        ret += 'message_type : '+str(self.type) + ", "
+        ret += 'data : '+str(self.data)
+        return ret
 
     def __eq__(self, other):
         return isinstance(other, WSNMessage) and\
