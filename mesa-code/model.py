@@ -6,7 +6,7 @@ from mesa.space import SingleGrid
 #from mesa.space import place_agent
 from mesa.time import RandomActivation
 from agent import WSNAgent
-
+from wsn_message import WSNMessage
 
 def split_on_last(string, char):
     rev_string = string[::-1]   # `[::-1]` gets the reverse of string
@@ -28,8 +28,7 @@ class WSNModel(Model):
         # Load messages
         with open(messages_path, 'r') as f:
             messages = yaml.safe_load(f)
-            print(messages)
-            exit()
+
         # Add agents
         for agent_class, agents in agents.items():
             module_name, class_name = split_on_last(agent_class, '.')
@@ -37,13 +36,19 @@ class WSNModel(Model):
             cls = getattr(module, class_name)
             for agent in agents:
                 a = cls(agent["id"], self, agent["color"])
-                a.update_messages()
+                #a.update_messages(messages[agent["id"]])
                 self.schedule.add(a)
                 self.grid.place_agent(a, (agent["x"], agent["y"]))
 
-    def step(self): 
-        #for agent in self.schedule.agents:
-        #    agent.update_messages(messages)
+    def step(self, messages_path): 
+        # Load and add messages
+        with open(messages_path, 'r') as f:
+            messages = yaml.safe_load(f)
+        for i in range(0, len(messages) -1):
+            WSNMessage(messages[i])
+            self.schedule.agents
+        for agent in self.schedule.agents:
+            agent.update_messages(messages)
         self.schedule.step()
     
     def run_model(self, n):

@@ -8,7 +8,8 @@ from wsn_message import WSNMessage
 
 
 DEFAULT_NB_STEPS = 20
-DEFAULT_PROFILE = Path("profiles", "default.yaml")
+#DEFAULT_PROFILE = Path("profiles", "default.yaml")
+FIFO = "./dt-mas-fifo"
 AGENT_DEFAULTS = {
     "color": "black",
 }
@@ -22,13 +23,24 @@ def get2(dictionary, key, default):
     return result
 
 
+
+
+
+
+
+
+
+
 def load_parameters(profile_file):
     """ Parse the profile file and add default values """
     with open(profile_file, 'r') as f:
         yaml_profile = yaml.safe_load(f)
+
     profile = {"model": yaml_profile["model"], "agents": {}}
+
     for class_name, agents in yaml_profile["agents"].items():
         profile["agents"][class_name] = []
+
         for i, agent in enumerate(agents):
             profile["agents"][class_name].append({
                 "id": i,
@@ -36,6 +48,7 @@ def load_parameters(profile_file):
                 "y": agent["y"],
                 "color": get2(agent, "color", AGENT_DEFAULTS["color"]),
             })
+            
     return profile
 
 
@@ -58,8 +71,16 @@ if __name__ == "__main__":
         "-p",
         "--profile",
         type = Path,
-        default = DEFAULT_PROFILE,
+        default = FIFO,
+        #default = DEFAULT_PROFILE,
         help = "the agents configuration in the simulator"
+    )
+    parser.add_argument(
+        "-t",
+        "--threshold",
+        type = int,
+        default = 5,
+        help = "Define threshold percentage for blackhole detection. Default is 5%"
     )
     subparsers = parser.add_subparsers(dest="command")
     gui_parser = subparsers.add_parser(
@@ -91,11 +112,15 @@ if __name__ == "__main__":
         default = DEFAULT_NB_STEPS,
         help = "the number of steps"
     )
+
+    # Parse argument and get Mesa profile from profile file path
     args = parser.parse_args()
     profile = load_parameters(args.profile)
+
     # Start the GUI
     if args.command == "gui":
         server.start(profile, args.port, args.open_browser)
+
     # Run the model without the server
     else:
         # Get the step count
@@ -103,11 +128,13 @@ if __name__ == "__main__":
             steps_count = args.steps_count
         except AttributeError:
             steps_count = DEFAULT_NB_STEPS
+
         # Initialization
         profile["model"].pop("name")
         model = WSNModel(profile["agents"], **profile["model"])
+
         # Beginning of the simulation
         print(f"seed: {model.seed}")
         for i in range(steps_count):
             print(f"step:{i}")
-            model.step()
+            model.step(profile["model"]["messages_path"])

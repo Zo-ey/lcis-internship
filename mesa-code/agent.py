@@ -11,14 +11,16 @@ State = Enum("State", ("Safe", "Suspicious", "Blackhole"))
 #   running or sub between 1st and last timestamp
 # * Lying advert: advert with wrong data which is shorter than in reality
 # * Not forwarding
-# * Pb: How to update messages? -> yaml file is write locked when MAS is reading it. By the
-# meanwile, DT keeps its information in an internal buffer. When MAS is done, MAS deletes the yaml
-# file. If there is no yaml file already created, DT creates it.
+# * Pb: How to update messages? 
+# * How to check others? -> Since there is no way in Mesa to have comm between agent, the best way
+# would be to check other's messages the same way ish that agent check their own and to say if they
+# are suspicious. The dt would then count how many agent (including th eagent itself) think that
+# "this" agent is suspicious/is a blackhole.
 
 # if the node sent an advertisement of value 0, it's malicious
 def has_malicious_ad(messages):
     for m in messages:
-        if m.type == MT.Advertisement and m.data == 0:
+        if m["message_type"] == "Advertisement" and m['data'] == 0:
             return True
     return False
 
@@ -49,10 +51,12 @@ class WSNAgent(Agent):
         self.tag = State.Safe
    # Update (and sort) messages lists
     def update_messages(self, messages):
+        #print(messages)
+        print(messages[0])
         for m in messages:
-            if m.src == self.unique_id:
+            if m["src"] == self.unique_id:
                 self.fromMe.append(m)
-            elif m.dest == self.unique_id:
+            elif m["dest"] == self.unique_id:
                 self.toMe.append(m)
             else:
                 self.throughMe.append(m)
