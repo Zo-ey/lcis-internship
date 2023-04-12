@@ -20,7 +20,7 @@ State = Enum("State", ("Safe", "Suspicious", "Blackhole"))
 # if the node sent an advertisement of value 0, it's malicious
 def has_malicious_ad(messages):
     for m in messages:
-        if m.type == "Advertisement" and m.data == 0:
+        if m.type == MT.Advertisement and m.data == 0:
             return True
     return False
 

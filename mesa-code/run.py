@@ -1,3 +1,4 @@
+import os
 import yaml
 from pathlib import Path
 
@@ -7,8 +8,9 @@ from wsn_message import WSNMessage
 
 
 DEFAULT_NB_STEPS = 20
-#DEFAULT_PROFILE = Path("profiles", "default.yaml")
-FIFO = "./dt-mas-fifo"
+#TODO: change file names management for default names + user custom names
+PROFILE_FIFO = "./profile-dt-mas-fifo"
+MESS_FIFO = "./messages-dt-mas-fifo"
 AGENT_DEFAULTS = {
     "color": "black",
 }
@@ -34,8 +36,9 @@ def load_parameters(profile_file):
     """ Parse the profile file and add default values """
     with open(profile_file, 'r') as f:
         yaml_profile = yaml.safe_load(f)
-
+    # print(yaml_profile)
     profile = {"model": yaml_profile["model"], "agents": {}}
+    f.close()
 
     for class_name, agents in yaml_profile["agents"].items():
         profile["agents"][class_name] = []
@@ -70,9 +73,8 @@ if __name__ == "__main__":
         "-p",
         "--profile",
         type = Path,
-        default = FIFO,
-        #default = DEFAULT_PROFILE,
-        help = "the agents configuration in the simulator"
+        default = PROFILE_FIFO,
+        help = "the agents configuration in the simulator (currently not working)"#TODO: change when corrected
     )
     parser.add_argument(
         "-t",
@@ -131,9 +133,11 @@ if __name__ == "__main__":
         # Initialization
         profile["model"].pop("name")
         model = WSNModel(profile["agents"], **profile["model"])
+        with open(MESS_FIFO, 'r') as f:
+            messages = yaml.safe_load(f)
 
         # Beginning of the simulation
         print(f"seed: {model.seed}")
         for i in range(steps_count):
             print(f"step:{i}")
-            model.step(profile["model"]["messages_path"])
+            model.step(messages)
