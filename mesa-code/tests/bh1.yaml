@@ -1,0 +1,199 @@
+# -1 means broadcast
+0:
+  - src: 0
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 1
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 2
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 3
+    dest: -1
+    message_type: Advertisement
+    data: 0x02
+  - src: 4
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 5
+    dest: -1
+    message_type: Advertisement
+    data: 0x02
+  - src: 0
+    dest: 1
+    message_type: Data
+    data: 0x02
+  - src: 2
+    dest: 4
+    message_type: Data
+    data: 0x00
+  - src: 4
+    dest: 2
+    message_type: Data
+    data: 0x01
+1: # Blackhole
+  - src: 0
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 1
+    dest: -1
+    message_type: Advertisement
+    data: 0xff
+  - src: 2
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 3
+    dest: -1
+    message_type: Advertisement
+    data: 0x02
+  - src: 4
+    dest: -1
+    message_type: Advertisement
+    data: 0x02
+  - src: 5
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 3
+    dest: 1
+    message_type: Data
+    data: 0x00
+  - src: 5
+    dest: 1
+    message_type: Data
+    data: 0x0a
+2:
+  - src: 0
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 1
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 2
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 3
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 4
+    dest: -1
+    message_type: Advertisement
+    data: 0x02
+  - src: 5
+    dest: -1
+    message_type: Advertisement
+    data: 0x03
+  - src: 2
+    dest: 4
+    message_type: Data
+    data: 0x00
+  - src: 4
+    dest: 2
+    message_type: Data
+    data: 0x01
+  - src: 3
+    dest: 1
+    message_type: Data
+    data: 0x00
+3:
+  - src: 0
+    dest: -1
+    message_type: Advertisement
+    data: 0x02
+  - src: 1
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 2
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 3
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 4
+    dest: -1
+    message_type: Advertisement
+    data: 0x03
+  - src: 5
+    dest: -1
+    message_type: Advertisement
+    data: 0x04
+  - src: 3
+    dest: 1
+    message_type: Data
+    data: 0x00
+4:
+  - src: 0
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 1
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 2
+    dest: -1
+    message_type: Advertisement
+    data: 0x02
+  - src: 3
+    dest: -1
+    message_type: Advertisement
+    data: 0x03
+  - src: 4
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 5
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 2
+    dest: 4
+    message_type: Data
+    data: 0x00
+  - src: 4
+    dest: 2
+    message_type: Data
+    data: 0x01
+5:
+  - src: 0
+    dest: -1
+    message_type: Advertisement
+    data: 0x02
+  - src: 1
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 2
+    dest: -1
+    message_type: Advertisement
+    data: 0x03
+  - src: 3
+    dest: -1
+    message_type: Advertisement
+    data: 0x04
+  - src: 4
+    dest: -1
+    message_type: Advertisement
+    data: 0x01
+  - src: 5
+    dest: -1
+    message_type: Advertisement
+    data: 0x00
+  - src: 5
+    dest: 1
+    message_type: Data
+    data: 0x0a
