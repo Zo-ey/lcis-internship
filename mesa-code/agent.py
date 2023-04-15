@@ -18,28 +18,31 @@ State = Enum("State", ("Safe", "Suspicious", "Blackhole"))
 # "this" agent is suspicious/is a blackhole.
 
 # if the node sent an advertisement of value 0, it's malicious
-def has_malicious_ad(messages):
-    for m in messages:
-        if m.type == MT.Advertisement and m.data == 0:
-            return True
+def is_malicious_ad(m):
+    if m.type == MT.Advertisement and m.data == 0:
+        return True
     return False
 
 # if the node doesn't send message, it's suspicious
 def is_sending_msg(messages):
-    return len(messages) != 0
+    for m in messages:
+        if m.type == MT.Data:
+            return True
+    return False
+
 # if the node doesn't forward a msg as expected, it's suspicious (maybe it didn't had the time to
 # send it yet)
 #def is_forwarding_msg(messages):
 
 # Blackhole if:
 # * advert with 0 hops / zero-distance
-def check_self(fromMe, toMe, throughMe):
-    state = State.Safe
-    if has_malicious_ad(fromMe):
-        state = State.Blackhole
-    elif not(is_sending_msg(fromMe)):
-        state = State.Suspicious
-    return state
+def update_tags(tags, ownId, fromMe, toMe, throughMe):
+    for m in toMe + throughMe:
+        if is_malicious_ad(m):
+            tags[m.src] = State.Blackhole
+    if not(is_sending_msg(fromMe)):
+        tags.update({ownId: State.Suspicious})
+    return tags
 
 class WSNAgent(Agent):
     def __init__(self, unique_id, model, color):
@@ -48,11 +51,9 @@ class WSNAgent(Agent):
         self.fromMe = [] # Messages sent by me
         self.toMe = [] # Messages sent to me
         self.throughMe = [] # Messages sent through me
-        self.tag = State.Safe
+        self.tagDict = {self.unique_id: State.Safe}
    # Update (and sort) messages lists
     def update_messages(self, messages):
-        #print(messages)
-        #print(messages)
         print("agent "+str(self.unique_id))
         for m in messages:
             print("    ",end="")
@@ -65,9 +66,8 @@ class WSNAgent(Agent):
                 self.throughMe.append(m)
 
     def step(self):
-        self.tag = check_self(self.fromMe, self.toMe, self.throughMe)
-        if self.tag == State.Suspicious:
-            print(f"Node {self.unique_id} is {self.tag}")
-        elif self.tag == State.Blackhole:
-            print(f"Node {self.unique_id} is {self.tag}")
+        self.tagDict = update_tags(self.tagDict, self.unique_id, self.fromMe, self.toMe, self.throughMe)
+        for id in self.tagDict.keys():
+            if self.tagDict[id] != State.Safe:
+                print(f"Node {id} is {self.tagDict[id]}")
 

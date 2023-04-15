@@ -110,6 +110,5 @@ if not os.path.exists(messages_fifo_name):
     else:
         pass
 out_m = os.open(messages_fifo_name, os.O_WRONLY)
-while True:
-    os.write(out_m, messages)
+os.write(out_m, messages)
 
