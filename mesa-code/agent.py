@@ -23,12 +23,18 @@ def is_malicious_ad(m):
         return True
     return False
 
-# if the node doesn't send message, it's suspicious
-def is_sending_msg(messages):
+# if the node doesn't send messages, it's suspicious
+def is_sending(messages, ratio):
+    count = 0
+    total = 0
     for m in messages:
+        total += 1
         if m.type == MT.Data:
-            return True
-    return False
+            count += 1
+    if count/total >= ratio:
+        return True
+    else:
+        return False
 
 # if the node doesn't forward a msg as expected, it's suspicious (maybe it didn't had the time to
 # send it yet)
@@ -36,22 +42,23 @@ def is_sending_msg(messages):
 
 # Blackhole if:
 # * advert with 0 hops / zero-distance
-def update_tags(tags, ownId, fromMe, toMe, throughMe):
+def update_tags(tags, ownId, fromMe, toMe, throughMe, ratio):
     for m in toMe + throughMe:
         if is_malicious_ad(m):
             tags[m.src] = State.Blackhole
-    if not(is_sending_msg(fromMe)):
+    if not(is_sending(fromMe, ratio)):
         tags.update({ownId: State.Suspicious})
     return tags
 
 class WSNAgent(Agent):
-    def __init__(self, unique_id, model, color):
+    def __init__(self, unique_id, model, color, bhRatio):
         super().__init__(unique_id, model)
         self.color = color
         self.fromMe = [] # Messages sent by me
         self.toMe = [] # Messages sent to me
         self.throughMe = [] # Messages sent through me
         self.tagDict = {self.unique_id: State.Safe}
+        self.ratio = bhRatio
    # Update (and sort) messages lists
     def update_messages(self, messages):
         print("agent "+str(self.unique_id))
@@ -66,7 +73,7 @@ class WSNAgent(Agent):
                 self.throughMe.append(m)
 
     def step(self):
-        self.tagDict = update_tags(self.tagDict, self.unique_id, self.fromMe, self.toMe, self.throughMe)
+        self.tagDict = update_tags(self.tagDict, self.unique_id, self.fromMe, self.toMe, self.throughMe, self.ratio)
         for id in self.tagDict.keys():
             if self.tagDict[id] != State.Safe:
                 print(f"Node {id} is {self.tagDict[id]}")

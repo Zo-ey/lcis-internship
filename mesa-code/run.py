@@ -79,9 +79,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "-t",
         "--threshold",
-        type = int,
-        default = 5,
-        help = "Define threshold percentage for blackhole detection. Default is 5%"
+        type = float,
+        default = 0,
+        help = "Define threshold for blackhole detection ratio. Default is 0"
     )
     subparsers = parser.add_subparsers(dest="command")
     gui_parser = subparsers.add_parser(
@@ -132,7 +132,7 @@ if __name__ == "__main__":
 
         # Initialization
         profile["model"].pop("name")
-        model = WSNModel(profile["agents"], **profile["model"])
+        model = WSNModel(profile["agents"], **profile["model"], blackholeRatio = args.threshold)
         with open(MESS_FIFO, 'r') as f:
             messages = yaml.safe_load(f)
 

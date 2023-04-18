@@ -16,7 +16,7 @@ def split_on_last(string, char):
 
 
 class WSNModel(Model):
-    def __init__(self, agents, width, height, seed=None):
+    def __init__(self, agents, width, height, blackholeRatio, seed=None):
         # Initialize the RNG
         self.seed = seed
         if self.seed is None:
@@ -26,6 +26,7 @@ class WSNModel(Model):
         self.running = True
         self.grid = SingleGrid(width, height, False)
         self.schedule = RandomActivation(self)
+        self.bhRatio = blackholeRatio
 
         # Add agents
         for agent_class, agents in agents.items():
@@ -33,7 +34,7 @@ class WSNModel(Model):
             module = importlib.import_module(module_name)
             cls = getattr(module, class_name)
             for agent in agents:
-                a = cls(agent["id"], self, agent["color"])
+                a = cls(agent["id"], self, agent["color"], self.bhRatio)
                 self.schedule.add(a)
                 self.grid.place_agent(a, (agent["x"], agent["y"]))
 
