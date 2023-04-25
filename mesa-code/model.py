@@ -8,6 +8,7 @@ from mesa.space import SingleGrid
 from mesa.time import RandomActivation
 from agent import WSNAgent
 from wsn_message import WSNMessage
+from mesa.datacollection import DataCollector
 
 def split_on_last(string, char):
     rev_string = string[::-1]   # `[::-1]` gets the reverse of string
@@ -27,7 +28,9 @@ class WSNModel(Model):
         self.grid = SingleGrid(width, height, False)
         self.schedule = RandomActivation(self)
         self.bhRatio = blackholeRatio
-
+        self.datacollector = DataCollector(
+                agent_reporters={"tagDict": lambda a: a.tagDict}
+        )
         # Add agents
         for agent_class, agents in agents.items():
             module_name, class_name = split_on_last(agent_class, '.')
@@ -49,6 +52,10 @@ class WSNModel(Model):
                 wsnmessages.append(WSNMessage(**tempMess))
             self.schedule.agents[i].update_messages(wsnmessages)
         self.schedule.step()
+        self.datacollector.collect(self)
+        a = self.datacollector.get_agent_vars_dataframe()
+        print("TagDict: ",end="")
+        print(a)
     
     def run_model(self, n):
         for i in range(n):
