@@ -15,13 +15,6 @@ class WSNMessage:
     
     # Check if self is the forwarded message of m
     def is_forward_of(self, m):
-        #print("CHECKING")
-        #print(WSNMessageType.Data == m.type) 
-        #print(self.type == m.type)
-        #print(self.src == m.src)
-        #print(self.dest == m.dest)
-        #print(self.dest_link == m.src_link)
-        #print(self.data == m.data)
         if (WSNMessageType.Data == m.type and 
             self.type == m.type and
             self.src == m.src and
