@@ -38,7 +38,18 @@ def is_sending(messages, ratio):
 
 # if the node doesn't forward a msg as expected, it's suspicious (maybe it didn't had the time to
 # send it yet)
-#def is_forwarding_msg(messages):
+def is_forwarding_msg(throughMe):
+    for m in throughMe:
+        isForwarding = False
+        if( m.type != MT.Data ):
+            continue
+        for m2 in throughMe:
+            if ( m.is_forward_of(m2) or m2.is_forward_of(m) ):
+                isForwarding = True
+                break
+        if ( not(isForwarding) ):
+            return False
+    return True
 
 # Blackhole if:
 # * advert with 0 hops / zero-distance
@@ -48,6 +59,8 @@ def update_tags(tags, ownId, fromMe, toMe, throughMe, ratio):
             tags[m.src] = State.Blackhole
     if not(is_sending(fromMe, ratio)):
         tags.update({ownId: State.Suspicious})
+    if not(is_forwarding_msg(throughMe)):
+        tags.update({ownId: State.Blackhole})
     return tags
 
 class WSNAgent(Agent):
