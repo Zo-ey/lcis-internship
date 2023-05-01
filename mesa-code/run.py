@@ -7,7 +7,7 @@ from model import WSNModel
 from wsn_message import WSNMessage
 
 
-DEFAULT_NB_STEPS = 20
+DEFAULT_NB_STEPS = 5
 #TODO: change file names management for default names + user custom names
 PROFILE_FIFO = "./profile-dt-mas-fifo"
 MESS_FIFO = "./messages-dt-mas-fifo"
@@ -144,4 +144,4 @@ if __name__ == "__main__":
             model.datacollector.collect(model)
             a = model.datacollector.get_agent_vars_dataframe()
             print("TagDict: ",end="")
-            print(a)
+            print(a.tail(6))
