@@ -141,3 +141,7 @@ if __name__ == "__main__":
         for i in range(steps_count):
             print(f"step:{i}")
             model.step(messages)
+            model.datacollector.collect(model)
+            a = model.datacollector.get_agent_vars_dataframe()
+            print("TagDict: ",end="")
+            print(a)

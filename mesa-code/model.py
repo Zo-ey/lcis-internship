@@ -52,10 +52,6 @@ class WSNModel(Model):
                 wsnmessages.append(WSNMessage(**tempMess))
             self.schedule.agents[i].update_messages(wsnmessages)
         self.schedule.step()
-        self.datacollector.collect(self)
-        a = self.datacollector.get_agent_vars_dataframe()
-        print("TagDict: ",end="")
-        print(a)
     
     def run_model(self, n):
         for i in range(n):

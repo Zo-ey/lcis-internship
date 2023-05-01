@@ -31,7 +31,7 @@ def is_sending(messages, ratio):
         total += 1
         if m.type == MT.Data:
             count += 1
-    if count/total >= ratio:
+    if count/total > ratio:
         return True
     else:
         return False
@@ -58,7 +58,7 @@ def update_tags(tags, ownId, fromMe, toMe, throughMe, ratio):
         if is_malicious_ad(m):
             tags[m.src] = State.Blackhole
     if not(is_sending(fromMe, ratio)):
-        tags.update({ownId: State.Suspicious})
+        tags.update({ownId: State.Blackhole})# Could only be suspicious
     if not(is_forwarding_msg(throughMe)):
         tags.update({ownId: State.Blackhole})
     return tags
