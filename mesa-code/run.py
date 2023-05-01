@@ -11,6 +11,7 @@ DEFAULT_NB_STEPS = 5
 #TODO: change file names management for default names + user custom names
 PROFILE_FIFO = "./profile-dt-mas-fifo"
 MESS_FIFO = "./messages-dt-mas-fifo"
+OUT = "./output"
 AGENT_DEFAULTS = {
     "color": "black",
 }
@@ -36,7 +37,6 @@ def load_parameters(profile_file):
     """ Parse the profile file and add default values """
     with open(profile_file, 'r') as f:
         yaml_profile = yaml.safe_load(f)
-    # print(yaml_profile)
     profile = {"model": yaml_profile["model"], "agents": {}}
     f.close()
 
@@ -142,6 +142,9 @@ if __name__ == "__main__":
             print(f"step:{i}")
             model.step(messages)
             model.datacollector.collect(model)
-            a = model.datacollector.get_agent_vars_dataframe()
+            output = model.datacollector.get_agent_vars_dataframe()
             print("TagDict: ",end="")
-            print(a.tail(6))
+            print(output.tail(6))
+
+        with open(OUT, 'w') as out:
+            out.write(output.to_string())
